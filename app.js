@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 
 app.use(require('./routes/post'));
 app.use(require('./routes/auth'));
+app.use(require('./routes/user'));
 app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
       res.status(401).send('Please login');
