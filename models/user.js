@@ -12,10 +12,15 @@ const userSchema=new mongoose.Schema({
         type:String,
         trim:true,
         required:true
+        
     },
    hashed_password:{
         type:String,
         required:true
+    },
+    photo:{
+        data:Buffer,
+        contentType:String
     },
     salt:String,
 } , { timestamps:true })

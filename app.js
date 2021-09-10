@@ -1,7 +1,8 @@
 const express=require('express');
 
 const app=express();
-
+const fs = require('fs');
+const cors=require('cors');
 const dotenv=require('dotenv');
 const mongoose=require('mongoose');
 const cookieParser=require('cookie-parser');
@@ -9,7 +10,7 @@ const expressValidator=require('express-validator')
 
 dotenv.config();
 
-
+app.use(cors())
 app.use(express.json())
 app.use(cookieParser());
 app.use(expressValidator())
@@ -28,7 +29,19 @@ app.use(function (err, req, res, next) {
     }
   });
 
-const PORT=3000;
+  app.get('/', (req, res) => {
+    fs.readFile('docs/apiDocs.json', (err, data) => {
+        if (err) {
+            res.status(400).json({
+                error: err
+            });
+        }
+        const docs = JSON.parse(data);
+        res.json(docs);
+    });
+});
+
+const PORT=5500;
 
 app.listen(PORT,()=>{
         console.log(`server is listening on port ${PORT}`);
