@@ -94,10 +94,12 @@ exports.addFollowing = (req, res, next) => {
   User.findByIdAndUpdate(
     req.body.userId,
     { $push: { following: req.body.followId } },
+    { new: true },
     (err, result) => {
       if (err) {
         return res.status(400).json({ error: err });
       }
+      
       next();
     }
   );
@@ -127,6 +129,7 @@ exports.removeFollowing = (req, res, next) => {
   User.findByIdAndUpdate(
     req.body.userId,
     { $pull: { following: req.body.unfollowId } },
+    { new: true },
     (err, result) => {
       if (err) {
         return res.status(400).json({ error: err });
@@ -150,6 +153,7 @@ exports.removeFollower = (req, res) => {
           error: err,
         });
       }
+      
       result.hashed_password = undefined;
       result.salt = undefined;
       res.json(result);
@@ -167,4 +171,17 @@ exports.deleteUser = (req, res, next) => {
 
     res.json({ message: "User deleted successfully" });
   });
+};
+
+exports.findPeople = (req, res) => {
+  let following = req.profile.following;
+  following.push(req.profile._id);
+  User.find({ _id: { $nin: following } }, (err, users) => {
+      if (err) {
+          return res.status(400).json({
+              error: err
+          });
+      }
+      res.json(users);
+  }).select('name');
 };
