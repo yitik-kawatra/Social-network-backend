@@ -62,7 +62,6 @@ exports.updateUser = (req, res, next) => {
 
         user.updated = Date.now();
       
-
         if (files.photo) {
             user.photo.data = fs.readFileSync(files.photo.path);
             user.photo.contentType = files.photo.type;
@@ -81,6 +80,15 @@ exports.updateUser = (req, res, next) => {
         });
     });
 };
+
+exports.userPhoto  =(req,res,next)=>{
+    if(req.profile.photo.data){
+        res.set(("Content-Type",req.profile.photo.contentType));
+        return res.send(req.profile.photo.data);
+    }
+    next();
+    
+}
 
 exports.deleteUser=(req,res,next)=>{
     let user=req.profile;

@@ -22,6 +22,10 @@ const userSchema=new mongoose.Schema({
         data:Buffer,
         contentType:String
     },
+    about:{
+        type:String,
+        trim:true
+    },
     salt:String,
 } , { timestamps:true })
 
