@@ -21,8 +21,9 @@ exports.getPosts=async(req,res)=>{
     try{
     const posts= await Post.find()
                             .populate("postedBy","_id name")
-                           .select("_id title body");
-    res.json({posts});
+                           .select("_id title body createdAt")
+                           .sort({createdAt:-1});
+    res.json(posts);
     }
     catch(error){
         console.log(error);
@@ -112,4 +113,9 @@ exports.updatePost = (req, res, next) => {
         }
         res.json(post);
     });
+};
+
+exports.photo = (req, res, next) => {
+    res.set('Content-Type', req.post.photo.contentType);
+    return res.send(req.post.photo.data);
 };
