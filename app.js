@@ -9,6 +9,9 @@ const cookieParser=require('cookie-parser');
 const expressValidator=require('express-validator')
 
 dotenv.config();
+const corsOptions={
+    origin:process.env.ALLOWED_CLIENTS
+}
 
 app.use(cors())
 app.use(express.json())
