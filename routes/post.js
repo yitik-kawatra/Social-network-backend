@@ -32,10 +32,12 @@ router.post(
 );
 
 
-router.get("/post/photo/:postId", photo);
+
 router.get("/posts/by/:userId", requireSignin, postsByUser);
 
+
 router.delete("/post/:postId", requireSignin, isPoster, deletePost);
+router.get("/post/photo/:postId", photo);
 router.put("/post/:postId", requireSignin, isPoster, updatePost);
 
 
