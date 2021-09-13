@@ -6,7 +6,7 @@ const _ = require('lodash');
 exports.postById = (req, res, next, id) => {
     Post.findById(id)
         .populate('postedBy', '_id name')
-        .select("_id title body created likes")
+        .select("_id title body created likes photo")
         .exec((err, post) => {
             if (err || !post) {
                 return res.status(400).json({
@@ -163,9 +163,8 @@ exports.unlike = (req, res) => {
 };
 
 exports.photo = (req, res, next) => {
-    // res.set(("Content-Type", req.post.photo.contentType));
-    // return res.send(req.post.photo.data);
-    res.send("hello there ")  ;
+    res.set("Content-Type", req.post.photo.contentType);
+    return res.send(req.post.photo.data);
 }
 exports.singlePost = (req, res) => {
     return res.json(req.post);
