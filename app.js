@@ -33,15 +33,16 @@ app.use(function (err, req, res, next) {
   });
 
   app.get('/', (req, res) => {
-    fs.readFile('docs/apiDocs.json', (err, data) => {
-        if (err) {
-            res.status(400).json({
-                error: err
-            });
-        }
-        const docs = JSON.parse(data);
-        res.json(docs);
-    });
+    // fs.readFile('docs/apiDocs.json', (err, data) => {
+    //     if (err) {
+    //         res.status(400).json({
+    //             error: err
+    //         });
+    //     }
+    //     const docs = JSON.parse(data);
+    //     res.json(docs);
+    // });
+    res.send("hello");
 });
 
 const PORT=process.env.PORT||5500
