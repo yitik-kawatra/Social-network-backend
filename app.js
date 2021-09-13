@@ -13,7 +13,7 @@ const corsOptions={
     origin:process.env.ALLOWED_CLIENTS
 }
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(cookieParser());
 app.use(expressValidator())
