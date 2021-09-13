@@ -113,7 +113,7 @@ exports.updatePost = (req, res, next) => {
                 error: 'Photo could not be uploaded'
             });
         }
-        // save post
+    
         let post = req.post;
         post = _.extend(post, fields);
         post.updated = Date.now();
