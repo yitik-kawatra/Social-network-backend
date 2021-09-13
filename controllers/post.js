@@ -6,6 +6,7 @@ const _ = require('lodash');
 exports.postById = (req, res, next, id) => {
     Post.findById(id)
         .populate('postedBy', '_id name')
+        .select("_id title body created likes")
         .exec((err, post) => {
             if (err || !post) {
                 return res.status(400).json({
@@ -21,7 +22,7 @@ exports.getPosts=async(req,res)=>{
     try{
     const posts= await Post.find()
                             .populate("postedBy","_id name")
-                           .select("_id title body created")
+                           .select("_id title body created likes")
                            .sort({created:-1});
     res.json(posts);
     }
@@ -66,7 +67,8 @@ exports.postsByUser = (req, res) => {
    
     Post.find({ postedBy: req.profile._id })
         .populate('postedBy', '_id name')
-        .sort('_created')
+        .select("_id title body created ,likes")
+        .sort('created')
         .exec((err, posts) => {
             if (err) {
                 return res.status(400).json({
@@ -131,6 +133,35 @@ exports.updatePost = (req, res, next) => {
         });
     });
 };
+
+exports.like = (req, res) => {
+    Post.findByIdAndUpdate(req.body.postId, { $push: { likes: req.body.userId } }, { new: true }).exec(
+        (err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            } else {
+                res.json(result);
+            }
+        }
+    );
+};
+
+exports.unlike = (req, res) => {
+    Post.findByIdAndUpdate(req.body.postId, { $pull: { likes: req.body.userId } }, { new: true }).exec(
+        (err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    error: err
+                });
+            } else {
+                res.json(result);
+            }
+        }
+    );
+};
+
 
 
 
